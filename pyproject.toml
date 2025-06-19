@@ -6,5 +6,60 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "geopandas>=1.1.0",
+    "matplotlib-backend-wezterm>=2.1.2",
+    "pyarrow>=20.0.0",
+    "python-lsp-server[all]>=1.12.2",
     "votekit>=3.2.1",
 ]
+[tool.ruff.lint]
+# Ruff rule reference: https://docs.astral.sh/ruff/rules/
+# TODO: Review comprehensions rule, https://docs.astral.sh/ruff/rules/#flake8-comprehensions-c4
+fixable = ["ALL"]
+select = [
+  "E",
+  "F",
+  "I",
+  "N",
+  "D",
+  # TODO: If type checking
+  #"ANN",
+  "S",
+  "B",
+  "A",
+  "COM",
+  "T10",
+  "ISC",
+  "ICN",
+  "T20",
+  "PT",
+  "Q",
+  "RET",
+  "SIM",
+  "ARG",
+  "PTH",
+  "PD",
+  "PL",
+  "TRY",
+  "NPY",
+  "PERF",
+]
+ignore = []
+
+[tool.ruff.lint.extend-per-file-ignores]
+# D104: Missing docstring in public package for __init__.py
+# doesn't make sense given that many are blank.
+"*__init__.py" = ["D104"]
+# S101: Assert is ok in tests, PLR2004: Allow using static numbers in tests
+"*_test.py" = ["S101", "PLR2004"]
+"test_*.py" = ["S101", "PLR2004"]
+
+# Pydocstyle (via Ruff)
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+# Pylint (via Ruff)
+[tool.ruff.pylint]
+# Default is 5, but the work to refactor this rule is not necessary
+# worth it.  Worth revisiting in the future.
+max-args = 10
+
