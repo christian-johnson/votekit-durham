@@ -137,6 +137,9 @@ n_simulations = 10
 
 d_to_x = np.linspace(0, 0.5, 21)
 x_to_d = np.linspace(0, 0.5, 21)
+# Total iterations: outer grid (11x11) × simulations
+total_iters = len(d_to_x) * len(x_to_d) * n_simulations
+pbar = tqdm(total=total_iters)
 
 for i, d_to_x_ in tqdm(enumerate(d_to_x), total=len(d_to_x)):
     stv_results[d_to_x_] = {}
@@ -146,7 +149,7 @@ for i, d_to_x_ in tqdm(enumerate(d_to_x), total=len(d_to_x)):
         cumulative_result_stv = {"R": 0, "D": 0, "P": 0}
         cumulative_result_partylist = {"R": 0, "D": 0, "P": 0}
 
-        for sim in range(n_simulations):
+        for _ in range(n_simulations):
             p_to_d = x_to_d_
             d_to_p = d_to_x_
             d_to_r = d_to_x_
@@ -179,6 +182,7 @@ for i, d_to_x_ in tqdm(enumerate(d_to_x), total=len(d_to_x)):
             for key in cumulative_result_stv:
                 cumulative_result_stv[key] += sim_result.get(key, 0)
 
+            pbar.update(1)
         stv_results[d_to_x_][x_to_d_] = cumulative_result_stv
         pl_results[d_to_x_][x_to_d_] = cumulative_result_partylist
 
